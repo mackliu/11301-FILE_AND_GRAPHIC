@@ -1,4 +1,5 @@
 <?php
+include_once "db.php";
 session_start();
 /**
  * 1.建立表單
@@ -13,7 +14,7 @@ if (!empty($_FILES)) {
     //echo "檔案大小: " . $_FILES['file']['size'] . "<br>";
     //echo "暫存名稱: " . $_FILES['file']['tmp_name'] . "<br>";
     if (move_uploaded_file($_FILES['file']['tmp_name'], "images/" . $_FILES['file']['name'])) {
-        $_SESSION['file'][] = $_FILES['file']['name'];
+        //$_SESSION['file'][] = $_FILES['file']['name'];
         echo "檔案上傳成功";
     } else {
         echo "檔案上傳失敗";
@@ -41,11 +42,12 @@ if (!empty($_FILES)) {
 
     <!----建立一個連結來查看上傳後的圖檔---->
     <?php
-    if (isset($_SESSION['file'])) {
-        foreach ($_SESSION['file'] as $file) {
-            echo "<img src='images/{$file}' class='upload-img'>";
-        }
+    $files = scandir("images/");
+    unset($files[0], $files[1]);
+    foreach ($files as $file) {
+        echo "<img src='images/{$file}' class='upload-img'>";
     }
+
     ?>
 
 </body>
