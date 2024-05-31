@@ -50,7 +50,9 @@ if (!empty($_FILES)) {
 
     foreach ($images as $image) {
         echo "<div class='upload-img'>";
-        echo "<a class='pen' href='edit_image.php?id={$image['id']}'><img src='./pen.png' style='width:15px;height:15px;'></a>";
+        echo "<a class='pen' href='edit_image.php?id={$image['id']}'>";
+            echo "<img src='./pen.png' style='width:15px;height:15px;'>";
+        echo "</a>";
         echo "<a class='del' href='del_image.php?id={$image['id']}'>X</a>";
         echo "<img src='images/{$image['name']}'>";
         echo "</div>";
