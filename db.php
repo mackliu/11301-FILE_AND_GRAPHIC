@@ -1,10 +1,10 @@
 <?php
 
-$dsn = "mysql:host=localhost;charset=utf8;dbname=school";
+$dsn = "mysql:host=localhost;charset=utf8;dbname=files";
 $pdo = new PDO($dsn, 'root', '');
 
 
-function all($table, $where)
+function all($table, $where = '')
 {
     global $pdo;
     $sql = "SELECT * FROM `{$table}` {$where}";
