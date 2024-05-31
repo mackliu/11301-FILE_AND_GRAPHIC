@@ -58,3 +58,7 @@
 .upload-img:hover .del{
     display:block;
 }
+.icon{
+    width:100px;
+    height: 100px;
+}
