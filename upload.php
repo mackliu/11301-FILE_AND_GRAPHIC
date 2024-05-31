@@ -7,6 +7,18 @@
  * 4.顯示檔案列表
  */
 
+if (!empty($_FILES)) {
+    echo "檔案名稱: " . $_FILES['file']['name'] . "<br>";
+    echo "檔案類型: " . $_FILES['file']['type'] . "<br>";
+    echo "檔案大小: " . $_FILES['file']['size'] . "<br>";
+    echo "暫存名稱: " . $_FILES['file']['tmp_name'] . "<br>";
+    if (move_uploaded_file($_FILES['file']['tmp_name'], "images/" . $_FILES['file']['name'])) {
+        echo "檔案上傳成功";
+    } else {
+        echo "檔案上傳失敗";
+    }
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
