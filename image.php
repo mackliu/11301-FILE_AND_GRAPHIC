@@ -70,7 +70,7 @@
             list($width, $height) = getimagesize($target_file);
 
             // 計算邊框的寬度，預設邊框寬度佔總寬度的10%
-            $border_size = round($width * 0.01);
+            $border_size = round($width * 0.05);
 
             // 縮小後的圖片大小應減去邊框的大小
             $new_width = round(($width * 0.5) - (2 * $border_size));
@@ -91,11 +91,57 @@
             $color_bottom = imagecolorallocate($bordered_image, 255, 255, 0); // 黃色
             $color_left = imagecolorallocate($bordered_image, 0, 128, 0);    // 綠色
 
-            // 填充邊框區域
-            imagefilledrectangle($bordered_image, 0, 0, $new_width + 2 * $border_size, $border_size, $color_top); // 上
-            imagefilledrectangle($bordered_image, $new_width + $border_size, 0, $new_width + 2 * $border_size, $new_height + 2 * $border_size, $color_right); // 右
-            imagefilledrectangle($bordered_image, 0, $new_height + $border_size, $new_width + 2 * $border_size, $new_height + 2 * $border_size, $color_bottom); // 下
-            imagefilledrectangle($bordered_image, 0, 0, $border_size, $new_height + 2 * $border_size, $color_left); // 左
+            // 繪製梯形邊框 (上)
+            $points_top = [
+                0,
+                0,                            // 左上角
+                $new_width + 2 * $border_size,
+                0,  // 右上角
+                $new_width + $border_size,
+                $border_size,  // 右下角（上邊框的底邊）
+                $border_size,
+                $border_size        // 左下角（上邊框的底邊）
+            ];
+            imagefilledpolygon($bordered_image, $points_top, 4, $color_top);
+
+            // 繪製梯形邊框 (右)
+            $points_right = [
+                $new_width + 2 * $border_size,
+                0,                          // 右上角
+                $new_width + 2 * $border_size,
+                $new_height + 2 * $border_size, // 右下角
+                $new_width + $border_size,
+                $new_height + $border_size,          // 左下角（右邊框的底邊）
+                $new_width + $border_size,
+                $border_size                      // 左上角（右邊框的底邊）
+            ];
+            imagefilledpolygon($bordered_image, $points_right, 4, $color_right);
+
+            // 繪製梯形邊框 (下)
+            $points_bottom = [
+                0,
+                $new_height + 2 * $border_size,                              // 左下角
+                $new_width + 2 * $border_size,
+                $new_height + 2 * $border_size, // 右下角
+                $new_width + $border_size,
+                $new_height + $border_size,            // 右上角（下邊框的頂邊）
+                $border_size,
+                $new_height + $border_size                        // 左上角（下邊框的頂邊）
+            ];
+            imagefilledpolygon($bordered_image, $points_bottom, 4, $color_bottom);
+
+            // 繪製梯形邊框 (左)
+            $points_left = [
+                0,
+                0,                          // 左上角
+                $border_size,
+                $border_size,     // 右上角（左邊框的底邊）
+                $border_size,
+                $new_height + $border_size, // 右下角（左邊框的底邊）
+                0,
+                $new_height + 2 * $border_size   // 左下角
+            ];
+            imagefilledpolygon($bordered_image, $points_left, 4, $color_left);
 
             // 將縮小的圖片複製到帶邊框的圖片中
             imagecopy($bordered_image, $thumb, $border_size, $border_size, 0, 0, $new_width, $new_height);
