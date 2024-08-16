@@ -70,7 +70,7 @@
             list($width, $height) = getimagesize($target_file);
 
             // 計算邊框的寬度，預設邊框寬度佔總寬度的10%
-            $border_size = round($width * 0.05);
+            $border_size = round($width * 0.01);
 
             // 縮小後的圖片大小應減去邊框的大小
             $new_width = round(($width * 0.5) - (2 * $border_size));
@@ -86,10 +86,10 @@
             $bordered_image = imagecreatetruecolor($new_width + 2 * $border_size, $new_height + 2 * $border_size);
 
             // 定義四個邊框顏色
-            $color_top = imagecolorallocate($bordered_image, 255, 0, 0);     // 紅色
-            $color_right = imagecolorallocate($bordered_image, 255, 165, 0); // 橙色
-            $color_bottom = imagecolorallocate($bordered_image, 255, 255, 0); // 黃色
-            $color_left = imagecolorallocate($bordered_image, 0, 128, 0);    // 綠色
+            $color_top = imagecolorallocate($bordered_image, 173, 216, 230);  // 最淺的藍色（上邊框）
+            $color_right = imagecolorallocate($bordered_image, 0, 0, 205);    // 中等藍色（右邊框）
+            $color_bottom = imagecolorallocate($bordered_image, 0, 0, 139);   // 深藍色（下邊框）
+            $color_left = imagecolorallocate($bordered_image, 135, 206, 250); // 較淺的藍色（左邊框）
 
             // 繪製梯形邊框 (上)
             $points_top = [
