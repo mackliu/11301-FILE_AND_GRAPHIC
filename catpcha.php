@@ -18,39 +18,23 @@
 
     function code(...$length)
     {
+        // 定義一個包含所有可能字元的字元池
+        $charPool = array_merge(range(0, 9), range('A', 'Z'), range('a', 'z'));
 
-        //使用亂數來產生驗證碼長度，判斷是否帶有參數來決定長度變數的產生方式
+        // 如果參數有指定長度，使用指定的長度，否則產生4到8之間的隨機長度
         $length = $length[0] ?? rand(4, 8);
 
-        //宣告一個空字串，用來存放驗證碼字串
-        $gstr = "";
-
-        //使用for迴圈來產生符合$length的驗證碼
-        for ($i = 0; $i < $length; $i++) {
-
-            //使用while迴圈來判斷字串是否有重覆的字元
-            while (mb_strlen($gstr) < $i + 1) {
-
-                //使用亂數來決定這一次迴圈的字元類型
-                $type = rand(1, 3);
-                switch ($type) {
-                    case 1:
-                        $t = rand(0, 9);       //使用rand()來產生0~9的任一數字
-                        break;
-                    case 2:
-                        $t = chr(rand(65, 90)); //使用chr()函式根據ASCII碼產生大寫字母
-                        break;
-                    case 3:
-                        $t = chr(rand(97, 122)); //使用chr()函式根據ASCII碼產生小寫字母
-                        break;
-                }
-
-                //判斷亂數產生的字元是否已在$gstr字串中，不存在則加入，已存在則重新產生
-                if (!mb_strpos($gstr, $t)) {
-                    $gstr .= $t;
-                }
-            }
+        // 如果長度超過字元池長度，則報錯或調整為字元池的最大長度
+        if ($length > count($charPool)) {
+            throw new InvalidArgumentException('指定的長度超過了字元池的最大長度。');
         }
+
+        // 使用 array_rand 從字元池中隨機選取不重複的字元
+        $keys = array_rand($charPool, $length);
+
+        // 把選取的字元連結成字串
+        $gstr = implode('', array_map(fn($key) => $charPool[$key], (array)$keys));
+
         return $gstr;
     }
 
@@ -95,7 +79,9 @@
             $text_info[$char]['x'] = min($tmp[0], $tmp[2], $tmp[4], $tmp[6]);
             $text_info[$char]['y'] = min($tmp[1], $tmp[3], $tmp[5], $tmp[7]);
         }
-
+        /*         echo "<pre>";
+        print_r($text_info);
+        echo "</pre>"; */
         //建立一個邊框的厚度變數
         $border = 10;
 
@@ -192,8 +178,8 @@
         return "data:image/png;base64," . base64_encode($output);
     }
     ?>
-
-    <img src="<?= captcha(code(5)); ?>" alt="" style="border:2px solid green">
+    <?php echo  $code = code(4) ?>
+    <img src="<?= captcha($code); ?>" alt="" style="border:2px solid green">
 
 
 </body>
