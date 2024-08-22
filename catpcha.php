@@ -59,7 +59,7 @@
             $char = mb_substr($gstr, $i, 1);
 
             //使用亂數產生一個正負之間的傾斜的角度
-            $text_info[$char]['angle'] = rand(-25, 25);
+            $text_info[$char]['angle'] = rand(-35, 35);
 
             //使用imagettfbbox()來取得單一字元在大小,角度和字型的影響下，字元圖形的四個角的坐標資訊陣列
             $tmp = imagettfbbox($fontsize, $text_info[$char]['angle'], realpath('./fonts/arial.ttf'), $char);
@@ -178,8 +178,8 @@
         return "data:image/png;base64," . base64_encode($output);
     }
     ?>
-    <?php echo  $code = code(4) ?>
-    <img src="<?= captcha($code); ?>" alt="" style="border:2px solid green">
+
+    <img src="<?= captcha(code(5)); ?>" alt="" style="border:2px solid green">
 
 
 </body>
